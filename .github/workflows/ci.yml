@@ -22,6 +22,11 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
+    - name: Prepare test
+      run: |
+        cd spec/dummy
+        BUNDLE_GEMFILE=../../${{ env.BUNDLE_GEMFILE }} RAILS_ENV=test bundle exec rake db:create db:migrate db:seed
+        cd ../..
     - name: Run test
       run: |
         bundle exec rspec
