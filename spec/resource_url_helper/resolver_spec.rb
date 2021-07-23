@@ -1,26 +1,24 @@
 describe ResourceUrlHelper::Resolver do
-  let(:url_helpers) { Rails.application.routes.url_helpers }
-
   context 'attribute' do
     let(:comment) { Comment.find(1) }
 
     it 'resolves url path' do
-      url = url_helpers.resource_url_for(comment, only_path: true)
+      url = described_class.new(comment, only_path: true).call
       expect(url).to eq("/items/#{comment.item_id}/comments/#{comment.id}")
     end
 
     it 'resolves url path for edit' do
-      url = url_helpers.resource_url_for(comment, action: :edit, only_path: true)
+      url = described_class.new(comment, action: :edit, only_path: true).call
       expect(url).to eq("/items/#{comment.item_id}/comments/#{comment.id}/edit")
     end
 
     it 'resolves url' do
-      url = url_helpers.resource_url_for(comment, host: 'http://example.com')
+      url = described_class.new(comment, host: 'http://example.com').call
       expect(url).to eq("http://example.com/items/#{comment.item_id}/comments/#{comment.id}")
     end
 
     it 'resolves url for edit' do
-      url = url_helpers.resource_url_for(comment, action: :edit, host: 'http://example.com')
+      url = described_class.new(comment, action: :edit, host: 'http://example.com').call
       expect(url).to eq("http://example.com/items/#{comment.item_id}/comments/#{comment.id}/edit")
     end
   end
@@ -29,7 +27,7 @@ describe ResourceUrlHelper::Resolver do
     let(:comment) { Association::Comment.find(1) }
 
     it 'resolves url' do
-      url = url_helpers.resource_url_for(comment, only_path: true)
+      url = described_class.new(comment, only_path: true).call
       expect(url).to eq("/items/#{comment.item.id}/comments/#{comment.id}")
     end
   end
@@ -47,7 +45,7 @@ describe ResourceUrlHelper::Resolver do
     end
 
     it 'resolves url' do
-      url = url_helpers.resource_url_for(comment, only_path: true)
+      url = described_class.new(comment, only_path: true).call
       expect(url).to eq("/items/0/comments/#{comment.id}")
     end
   end

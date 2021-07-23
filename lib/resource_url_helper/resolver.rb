@@ -18,7 +18,7 @@ module ResourceUrlHelper
     private
 
     def url_helpers
-      Config.url_helpers || Rails.application.routes.url_helpers
+      Rails.application.routes.url_helpers
     end
 
     def resolve_route_method
